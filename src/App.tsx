@@ -1,7 +1,11 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { CreateTripPage } from "./app/pages/create-trip";
+import { TripDetailsPage } from "./app/pages/trip-details";
+
+const router = createBrowserRouter([
+  { path: "/", element: <CreateTripPage /> },
+  { path: "/trip/:tripId", element: <TripDetailsPage /> },
+]);
 export function App() {
-  return (
-    <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
