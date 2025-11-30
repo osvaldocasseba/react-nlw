@@ -1,19 +1,14 @@
-import {
-  MapPin,
-  Calendar,
-  ArrowRight,
-  UserRoundPlus,
-  Settings2,
-} from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { InviteGuests } from "../../../components/modals/invite-guests";
-import { ConfirmTrip } from "../../../components/modals/confirm-trip";
+import { InviteGuests } from "../../../components/create-trip/modal/invite-guests/invite-guests";
+import { ConfirmTrip } from "../../../components/create-trip/modal/confirm-trip/confirm-trip";
+import DestinatioDate from "../../../components/create-trip/inputs/destination-date";
+import { TripConfirmInvite } from "../../../components/create-trip/inputs/trip-confirm-invite";
 export function CreateTripPage() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState(false);
-  const [mailInvite, setMaliinvite] = useState([""]);
+  const [mailInvite, setMailInvite] = useState(["osvaldo.casseb@gmail.com"]);
   const [confirmTrip, setConfirmTrip] = useState(false);
 
   function openInput() {
@@ -22,7 +17,7 @@ export function CreateTripPage() {
   function closeInput() {
     setOpen(false);
   }
-  function opneModal() {
+  function openModal() {
     setModal(true);
   }
   function closeModal() {
@@ -31,14 +26,14 @@ export function CreateTripPage() {
   function addEmailInvite(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const email = data.get("email")?.toString();
+    const email = data?.get("email")?.toString();
     if (!email) {
       return undefined;
     }
     {
       mailInvite.includes(email)
         ? alert("O email já inclui na sua lista de convidados.")
-        : setMaliinvite([...mailInvite, email]);
+        : setMailInvite?.([...mailInvite, email]);
     }
 
     e.currentTarget.reset();
@@ -52,82 +47,30 @@ export function CreateTripPage() {
   }
   function removeItemsFromInvite(emailRemove: string) {
     const newEmailList = mailInvite.filter((email) => email !== emailRemove);
-    setMaliinvite(newEmailList);
+    setMailInvite(newEmailList);
   }
   function createTrip(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    navigate("/trip/1");
+    navigate("/detalhes-da-viajem/1");
   }
   return (
-    <div className="h-screen flex items-center justify-center ">
+    <section className="h-screen flex items-center justify-center ">
       <div className="max-w-3xl px-6 text-center space-y-10">
         <p className="text-zinc-300 text-lg">
           Convide seu amigos, planeie sua próoxima viajem!
         </p>
         <div className="space-y-4">
-          <div className="h-16 bg-zinc-900 px-4 rounded-xl flex gap-3 items-center border border-zinc-500/15">
-            <div className="flex items-center gap-2 flex-1">
-              <MapPin className="size-5 text-zinc-400" />
-              <input
-                disabled={open}
-                type="text"
-                placeholder="Para onde você vai?"
-                className="bg-transparent text-lg placeholder-zinc-400 focus:text-zinc-400 focus:outline-none flex-1"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="size-5 text-zinc-400" />
-              <input
-                disabled={open}
-                type="text"
-                placeholder="Quando?"
-                className="bg-transparent text-lg placeholder-zinc-400 w-40 focus:text-zinc-400 focus:outline-none"
-              />
-            </div>
-            <div className="w-px h-6 bg-zinc-800 " />
-            {open ? (
-              <button
-                onClick={closeInput}
-                className="bg-zinc-800 text-zinc-200 px-5 py-2 rounded-lg font-medium hover:bg-zinc-700"
-              >
-                Alterar data/local
-                <Settings2 className="size-5 text-zinc-400 inline-block ml-2" />
-              </button>
-            ) : (
-              <button
-                onClick={openInput}
-                className="bg-lime-300 text-lime-950 px-5 py-2 rounded-lg font-medium hover:bg-lime-400"
-              >
-                Continuar
-              </button>
-            )}
-          </div>
+          <DestinatioDate
+            closeInput={closeInput}
+            open={open}
+            openInput={openInput}
+          />
           {open && (
-            <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center border border-zinc-500/15">
-              <button
-                onClick={opneModal}
-                className="flex items-center gap-2 flex-1"
-              >
-                <UserRoundPlus className="size-5 text-zinc-400 " />
-                {mailInvite.length > 0 ? (
-                  <span className="bg-transparent text-lg  text-zinc-100 text-left  flex-1">
-                    {mailInvite.length} pessoa (s) convidada (s)
-                  </span>
-                ) : (
-                  <span className="bg-transparent text-lg  text-zinc-400 text-left  flex-1">
-                    Quem estara na viajem?
-                  </span>
-                )}
-              </button>
-              <div className="w-px h-6 bg-zinc-800" />
-              <button
-                onClick={confirmTripOpen}
-                className="bg-lime-300 text-lime-950 px-5 py-2 rounded-lg font-medium hover:bg-lime-400"
-              >
-                Confirmar viajem
-                <ArrowRight className="inline-block size-5 ml-2" />
-              </button>
-            </div>
+            <TripConfirmInvite
+              confirmTripOpen={confirmTripOpen}
+              mailInvite={mailInvite}
+              openModal={openModal}
+            />
           )}
         </div>
         <div className="flex items-center justify-center text-center px-28 ">
@@ -159,6 +102,6 @@ export function CreateTripPage() {
           confirmTripClose={confirmTripClose}
         />
       )}
-    </div>
+    </section>
   );
 }

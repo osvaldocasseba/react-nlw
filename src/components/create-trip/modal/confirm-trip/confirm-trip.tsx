@@ -1,8 +1,9 @@
 import { User, X } from "lucide-react";
 import type { FormEvent } from "react";
+import Button from "../../../buttons";
 interface confirmTripProps {
-  confirmTripClose: () => void;
-  createTrip: (e: FormEvent<HTMLFormElement>) => void;
+  confirmTripClose?: () => void;
+  createTrip?: (e: FormEvent<HTMLFormElement>) => void;
 }
 
 export function ConfirmTrip({
@@ -43,7 +44,7 @@ export function ConfirmTrip({
               type="text"
               name="name"
               placeholder="Seu nome completo"
-              className="bg-transparent text-lg placeholder:text-zinc-400 focus:outline-none"
+              className="bg-transparent text-lg placeholder:text-zinc-400 focus:outline-none w-full"
             />
           </div>
           <div className="bg-zinc-950 rounded-lg border border-zinc-700 flex items-center px-4  h-14 ">
@@ -52,15 +53,12 @@ export function ConfirmTrip({
               type="email"
               name="email"
               placeholder="Seu email pessoal"
-              className="bg-transparent text-lg placeholder:text-zinc-400 focus:outline-none"
+              className="bg-transparent text-lg placeholder:text-zinc-400 focus:outline-none w-full"
             />
           </div>
-          <button
-            type="submit"
-            className=" w-full bg-lime-300 hover:bg-lime-400 rounded-lg px-3 text-black h-11 text-center items-center"
-          >
+          <Button type="submit" size="full">
             Confirmar criação da viajem
-          </button>
+          </Button>
         </form>
       </div>
     </div>
